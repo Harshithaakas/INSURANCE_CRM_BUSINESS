@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upcoming Renewals</title>
+
+<style>
+body { font-family: Arial; background: #f4f6f9; }
+.header { display:flex; justify-content:space-between; margin-bottom:20px; }
+.select-days { padding:5px 10px; }
+.search-box { margin-bottom:15px; }
+
+table {
+    width:100%;
+    border-collapse: collapse;
+    background:white;
+    min-width:2000px;
+}
+
+th, td {
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    white-space: nowrap;
+}
+
+th { background:#f1f2f6; }
+
+.table-container {
+    overflow-x:auto;
+    max-height:600px;
+    overflow-y:auto;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h2>Upcoming Renewals</h2>
+
+<select id="renewalDays" onchange="loadRenewalsByDays()">
+    <option value="today">Today Expiring</option>
+    <option value="urgent">🔴 Urgent (1–2 Days)</option>
+    <option value="overdue">❗ Overdue</option>
+    <option value="all">All</option>
+    <option value="1">1 Day</option>
+    <option value="2">2 Days</option>
+    <option value="5">5 Days</option>
+    <option value="7">7 Days</option>
+    <option value="10">10 Days</option>
+    <option value="102">102 Days</option>
+</select>
+</div>
+
+<div class="search-box">
+<input 
+    type="text" 
+    id="renewalSearchInput" 
+    placeholder="Search anything..."
+    onkeyup="searchRenewals()"
+>
+<button onclick="resetRenewals()">Reset</button>
+</div>
+
+<button onclick="sendBulkEmail()" style="margin-bottom:10px;">
+📧 Send Email Reminder
+</button>
+
+
+<button onclick="sendBulkWhatsApp()" style="margin-bottom:10px;">
+📱 Send WhatsApp Reminder (Urgent)
+</button>
+
+<div class="table-container">
+<table id="renewalsTable">
+
+<thead>
+<tr>
+<th>Sr No</th>
+<th>Month</th>
+<th>Customer</th>
+<th>Insurer</th>
+<th>Policy Type</th>
+<th>Department</th>
+<th>Source</th>
+<th>Expire Date</th>
+<th>Commissionable Premium</th>
+<th>Net / OD Premium</th>
+<th>TP Premium</th>
+<th>PBST NP</th>
+<th>Gross Premium</th>
+<th>NCB</th>
+<th>Policy Number</th>
+<th>Make</th>
+<th>Model Variant</th>
+<th>Vehicle Category</th>
+<th>Passengers / GVW</th>
+<th>Vehicle No</th>
+<th>CC</th>
+<th>Fuel</th>
+<th>RTO</th>
+<th>Agent</th>
+<th>PDF</th>
+<th>Email</th>
+<th>Phone</th>
+<th>WhatsApp</th>
+<th>Days Left</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+</div>
+
+
+
+</body>
+</html>

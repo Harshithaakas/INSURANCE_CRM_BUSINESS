@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Customers</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.header h2{
+margin:0;
+}
+
+.buttons{
+display:flex;
+gap:10px;
+}
+
+button{
+padding:8px 15px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.import-btn{
+background:#3498db;
+color:white;
+}
+
+.export-btn{
+background:#2ecc71;
+color:white;
+}
+
+.search-box{
+margin-bottom:15px;
+}
+
+.search-box input{
+padding:8px;
+width:300px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+font-size:14px;
+min-width:2000px;
+}
+
+th, td{
+padding:10px 14px;
+border-bottom:1px solid #ddd;
+text-align:left;
+white-space:nowrap;
+}
+
+th{
+background:#f1f2f6;
+font-weight:bold;
+}
+
+tr:hover{
+background:#f9fafc;
+}
+
+.table-container{
+overflow-x:auto;
+width:100%;
+max-height:600px;
+overflow-y:auto;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.action-btn{
+padding:5px 10px;
+border-radius:4px;
+text-decoration:none;
+color:white;
+}
+
+.edit{
+background:#f39c12;
+}
+
+.delete{
+background:#e74c3c;
+}
+
+.filter-bar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+.filter-bar input,
+.filter-bar select{
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    min-width:140px;
+}
+
+.filter-bar button{
+    background:#2ecc71;
+    color:white;
+}
+
+th{
+    position:sticky;
+    top:0;
+    background:#f1f2f6;
+}
+
+
+/* 🔥 COMMON BUTTON STYLE */
+.btn{
+    padding:8px 16px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+/* IMPORT BUTTON */
+.import-btn{
+    background:#3498db;
+    color:white;
+}
+
+/* EXPORT BUTTON */
+.export-btn{
+    background:#2ecc71;
+    color:white;
+}
+
+/* FILE INPUT STYLE */
+.import-box{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+/* CUSTOM FILE BUTTON */
+.file-label{
+    background:#ecf0f1;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+
+.file-label:hover{
+    background:#dcdde1;
+}
+
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:20px; /* 🔥 spacing between left & right */
+}
+
+.import-section{
+    flex:0 0 auto;
+}
+
+.filter-section{
+    flex:1;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+
+.filter-section input,
+.filter-section select{
+    padding:8px 10px;
+    min-width:150px;
+}
+
+/* Optional: spacing on small screens */
+@media(max-width:768px){
+    .top-bar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .filter-section{
+        justify-content:flex-start;
+    }
+}
+
+</style>
+
+
+
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="top-bar">
+
+    <!-- LEFT SIDE (Import) -->
+    <div class="import-section">
+        <form action="/import_excel" method="POST" enctype="multipart/form-data" class="import-box">
+
+            <label class="file-label">
+                Choose Excel
+                <input type="file" name="file" required hidden>
+            </label>
+
+            <button class="btn import-btn" type="submit">Import</button>
+
+        </form>
+    </div>
+
+    <!-- RIGHT SIDE (Filters + Export) -->
+    <div class="filter-section">
+
+        <input type="text" id="agent" placeholder="Agent Name">
+        <input type="text" id="monthColumn" placeholder="Month (Jan, Feb)">
+
+        <select id="expiryMonth">
+            <option value="">Expiry Month</option>
+            <option value="1">Jan</option>
+            <option value="2">Feb</option>
+            <option value="3">Mar</option>
+            <option value="4">Apr</option>
+            <option value="5">May</option>
+            <option value="6">Jun</option>
+            <option value="7">Jul</option>
+            <option value="8">Aug</option>
+            <option value="9">Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+        </select>
+
+        <input type="number" id="year" placeholder="Year">
+        <input type="text" id="policy_type" placeholder="Policy Type">
+
+        <button class="btn export-btn" onclick="exportFiltered()">Export</button>
+
+    </div>
+
+</div>
+</div>
+
+
+
+
+<div class="search-box">
+    <input 
+    type="text" 
+    id="custSearchInput" 
+    placeholder="Search anything..." 
+    onkeyup="searchTable('custSearchInput','customerTable')"
+>
+    <button onclick="resetTable('custSearchInput', 'customerTable')">Reset</button>
+</div>
+
+
+
+
+<div class="table-container">
+
+<table id="customerTable">
+
+<thead>
+
+<tr>
+
+<th>Sr No</th>
+<th>Month</th>
+<th>CustName</th>
+<th>Insurer</th>
+<th>Policy Type</th>
+<th>Department</th>
+<th>Source</th>
+<th>Expire Date</th>
+<th>Commissionable Premium</th>
+<th>Net / OD Premium</th>
+<th>TP Premium</th>
+<th>PBST (NP)</th>
+<th>Gross Premium</th>
+<th>NCB</th>
+<th>Policy Number</th>
+<th>Make</th>
+<th>Model / Variant</th>
+<th>Vehicle Category</th>
+<th>Passengers / GVW</th>
+<th>Vehicle No</th>
+<th>CC</th>
+<th>Fuel</th>
+<th>RTO</th>
+<th>Agent</th>
+<th>Policy Pdf</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for c in customers %}
+
+<tr>
+
+
+<td>{{ loop.index }}</td>
+<td>{{ c.month }}</td>
+<td>{{ c.cust_name }}</td>
+<td>{{ c.insurer }}</td>
+<td>{{ c.policy_type }}</td>
+<td>{{ c.department }}</td>
+<td>{{ c.source }}</td>
+<td>{{ c.expire_date }}</td>
+<td>{{ c.commissionable_premium }}</td>
+<td>{{ c.net_od_premium }}</td>
+<td>{{ c.tp_premium }}</td>
+<td>{{ c.pbst_np }}</td>
+<td>{{ c.gross_premium }}</td>
+<td>{{ c.ncb }}</td>
+<td>{{ c.policy_number }}</td>
+<td>{{ c.make }}</td>
+<td>{{ c.model_variant }}</td>
+<td>{{ c.vehicle_category }}</td>
+<td>{{ c.passengers_gvw }}</td>
+<td>{{ c.vehicle_no }}</td>
+<td>{{ c.cc }}</td>
+<td>{{ c.fuel }}</td>
+<td>{{ c.rto_name }}</td>
+<td>{{ c.ref_name }}</td>
+<td>
+
+{% if c.policy_pdf %}
+
+<a href="/static/uploads/policies/{{c.policy_pdf}}" target="_blank">
+View
+</a>
+
+<a href="/delete_pdf/{{c.id}}" style="color:red;margin-left:10px;">
+Delete
+</a>
+
+{% else %}
+
+No File
+
+{% endif %}
+
+</td>
+<td>{{ c.mail }}</td>
+<td>{{ c.phone }}</td>
+
+<td>
+
+<td>
+<a class="action-btn edit" href="/edit_customer/{{c.id}}">Edit</a>
+
+<a class="action-btn delete" href="/delete_customer/{{c.id}}" onclick="return confirm('Delete this customer?')"> Delete </a>
+
+</td>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</body>
+
+</html>

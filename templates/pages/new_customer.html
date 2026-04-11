@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Add New Customer</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+padding:30px;
+}
+
+.container{
+background:white;
+padding:25px;
+border-radius:10px;
+max-width:900px;
+margin:auto;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+input{
+padding:8px;
+border:1px solid #ccc;
+border-radius:5px;
+width:100%;
+}
+
+button{
+margin-top:20px;
+padding:10px 20px;
+background:#2ecc71;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Add New Customer</h2>
+
+<form method="POST" action="/new_customer" enctype="multipart/form-data">
+
+<div class="grid">
+
+<input name="sr_no" placeholder="Sr No">
+<input name="month" placeholder="Month">
+
+<input name="cust_name" placeholder="Customer Name">
+<input name="insurer" placeholder="Insurer">
+
+<input name="policy_type" placeholder="Policy Type">
+<input name="department" placeholder="Department">
+
+<input name="source" placeholder="Source">
+<input type="date" name="expire_date" required>
+
+<input name="commissionable_premium" placeholder="Commissionable Premium">
+<input name="net_od_premium" placeholder="Net/OD Premium">
+
+<input name="tp_premium" placeholder="TP Premium">
+<input name="pbst_np" placeholder="PBST (NP)">
+
+<input name="gross_premium" placeholder="Gross Premium">
+<input name="ncb" placeholder="NCB">
+
+<input name="policy_number" placeholder="Policy Number">
+<input name="make" placeholder="Make">
+
+<input name="model_variant" placeholder="Model Variant">
+<input name="vehicle_category" placeholder="Vehicle Category">
+
+<input name="passengers_gvw" placeholder="Passengers / GVW">
+<input name="vehicle_no" placeholder="Vehicle No">
+
+<input name="cc" placeholder="CC">
+<input name="fuel" placeholder="Fuel">
+
+<input name="rto_name" placeholder="RTO Name">
+<input name="ref_name" placeholder="Agent Name">
+
+<label>Policy PDF</label>
+<input type="file" name="policy_pdf" accept="application/pdf">
+<input name="mail" placeholder="Email">
+
+<input name="phone" placeholder="Phone">
+
+</div>
+
+
+<button type="submit">Add Customer</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

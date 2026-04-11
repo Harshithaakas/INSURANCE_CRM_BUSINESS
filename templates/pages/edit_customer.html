@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Edit Customer</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+padding:20px;
+}
+
+/* container */
+
+.form-container{
+background:white;
+padding:25px;
+border-radius:10px;
+max-width:1100px;
+margin:auto;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+/* responsive grid */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+}
+
+/* field */
+
+.field{
+display:flex;
+flex-direction:column;
+}
+
+.field label{
+font-size:13px;
+margin-bottom:4px;
+color:#444;
+}
+
+input{
+padding:8px;
+border:1px solid #ccc;
+border-radius:5px;
+width:100%;
+box-sizing:border-box;
+}
+
+/* pdf section */
+
+.pdf-section{
+grid-column:1 / span 2;
+background:#f7f9fc;
+padding:15px;
+border-radius:6px;
+}
+
+.pdf-section a{
+color:#3498db;
+text-decoration:none;
+font-weight:bold;
+}
+
+/* button */
+
+.button-box{
+grid-column:1 / span 2;
+text-align:center;
+}
+
+button{
+padding:12px 25px;
+background:#3498db;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+margin-top:10px;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+/* 📱 MOBILE RESPONSIVE */
+
+@media (max-width:768px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.pdf-section{
+grid-column:1;
+}
+
+.button-box{
+grid-column:1;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+<h2>Edit Customer</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+<div class="grid">
+
+<div class="field">
+<label>Sr No</label>
+<input name="sr_no" value="{{customer.sr_no}}">
+</div>
+
+<div class="field">
+<label>Month</label>
+<input name="month" value="{{customer.month}}">
+</div>
+
+<div class="field">
+<label>Customer Name</label>
+<input name="cust_name" value="{{customer.cust_name}}">
+</div>
+
+<div class="field">
+<label>Insurer</label>
+<input name="insurer" value="{{customer.insurer}}">
+</div>
+
+<div class="field">
+<label>Policy Type</label>
+<input name="policy_type" value="{{customer.policy_type}}">
+</div>
+
+<div class="field">
+<label>Department</label>
+<input name="department" value="{{customer.department}}">
+</div>
+
+<div class="field">
+<label>Source</label>
+<input name="source" value="{{customer.source}}">
+</div>
+
+<div class="field">
+<label>Expire Date</label>
+<input type="date" name="expire_date" value="{{customer.expire_date}}">
+</div>
+
+<div class="field">
+<label>Commissionable Premium</label>
+<input name="commissionable_premium" value="{{customer.commissionable_premium}}">
+</div>
+
+<div class="field">
+<label>Net / OD Premium</label>
+<input name="net_od_premium" value="{{customer.net_od_premium}}">
+</div>
+
+<div class="field">
+<label>TP Premium</label>
+<input name="tp_premium" value="{{customer.tp_premium}}">
+</div>
+
+<div class="field">
+<label>PBST (NP)</label>
+<input name="pbst_np" value="{{customer.pbst_np}}">
+</div>
+
+<div class="field">
+<label>Gross Premium</label>
+<input name="gross_premium" value="{{customer.gross_premium}}">
+</div>
+
+<div class="field">
+<label>NCB</label>
+<input name="ncb" value="{{customer.ncb}}">
+</div>
+
+<div class="field">
+<label>Policy Number</label>
+<input name="policy_number" value="{{customer.policy_number}}">
+</div>
+
+<div class="field">
+<label>Make</label>
+<input name="make" value="{{customer.make}}">
+</div>
+
+<div class="field">
+<label>Model / Variant</label>
+<input name="model_variant" value="{{customer.model_variant}}">
+</div>
+
+<div class="field">
+<label>Vehicle Category</label>
+<input name="vehicle_category" value="{{customer.vehicle_category}}">
+</div>
+
+<div class="field">
+<label>Passengers / GVW</label>
+<input name="passengers_gvw" value="{{customer.passengers_gvw}}">
+</div>
+
+<div class="field">
+<label>Vehicle No</label>
+<input name="vehicle_no" value="{{customer.vehicle_no}}">
+</div>
+
+<div class="field">
+<label>CC</label>
+<input name="cc" value="{{customer.cc}}">
+</div>
+
+<div class="field">
+<label>Fuel</label>
+<input name="fuel" value="{{customer.fuel}}">
+</div>
+
+<div class="field">
+<label>RTO Name</label>
+<input name="rto_name" value="{{customer.rto_name}}">
+</div>
+
+<div class="field">
+<label>Agent Name</label>
+<input name="ref_name" value="{{customer.ref_name}}">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input name="mail" value="{{customer.mail}}">
+</div>
+
+<div class="field">
+<label>Phone</label>
+<input name="phone" value="{{customer.phone}}">
+</div>
+
+<div class="pdf-section">
+
+<label>Current Policy PDF</label><br>
+
+{% if customer.policy_pdf %}
+<a href="/static/uploads/policies/{{customer.policy_pdf}}" target="_blank">
+View Current File
+</a>
+{% else %}
+<p>No File Uploaded</p>
+{% endif %}
+
+<br><br>
+
+<label>Upload New Policy PDF</label>
+<input type="file" name="policy_pdf" accept="application/pdf">
+
+</div>
+
+<div class="button-box">
+<button type="submit">Update Customer</button>
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</body>
+</html>

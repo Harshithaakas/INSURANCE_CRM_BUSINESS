@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NSure Insurance CRM</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{
+margin:0;
+font-family:Arial;
+display:flex;
+}
+
+/* Sidebar */
+.sidebar{
+    width:250px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* WHITE LOGO AREA */
+.logo-section{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.brand-logo-img{
+    height:90px;
+    width:auto;
+}
+
+/* BLUE MENU AREA */
+.menu-section{
+    background:#0d3b66;
+    color:white;
+    flex:1;
+    padding-top:20px;
+}
+
+.menu-section h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.menu-section a{
+    display:block;
+    padding:15px 20px;
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.menu-section a:hover{
+    background:#144f8b;
+}
+/* Main content */
+.main{
+flex:1;
+padding:20px;
+background:#f4f6f9;
+overflow:auto;
+
+/* 🔥 FIX START */
+width:100%;
+min-width:0;
+display:block;
+box-sizing:border-box;
+/* 🔥 FIX END */
+}
+
+.topbar {
+    width: 100%;
+    height: 60px;
+    background: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.user-box {
+    text-align: right;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-email {
+    font-size: 12px;
+    color: gray;
+}
+
+.logo-section{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th, td{
+padding:10px;
+text-align:left;
+}
+
+.container, .content-wrapper{
+width:100%;
+}
+
+
+</style>
+
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+
+<div class="logo-section">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" 
+             alt="NSure Logo" class="brand-logo-img">
+    </div>
+
+<div class="menu-section">
+
+<a href="#" onclick="loadPage('dashboard_page')">Dashboard</a>
+
+<div class="menu">
+<a onclick="toggleCustomerMenu()">Customers ▼</a>
+
+<div id="customerMenu" style="display:none;padding-left:15px;">
+    <a onclick="loadPage('customers_search')">Search Customers</a>
+    <a onclick="loadPage('new_customer')">New Customer</a>
+</div>
+</div>
+
+<a onclick="loadPage('insurances')">Insurances</a>
+<a onclick="loadPage('renewals')">Upcoming Renewals</a>
+<script>
+
+function loadRenewalsByDays(){
+
+    let days = document.getElementById("renewalDays").value;
+
+    let url = "/get_renewals";
+
+    if(days !== "all"){
+        url += "?days=" + days;
+    }
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+
+        let tbody = document.querySelector("#renewalsTable tbody");
+        tbody.innerHTML = "";
+
+        if(data.length === 0){
+            tbody.innerHTML = "<tr><td colspan='29'>No Data Found</td></tr>";
+            return;
+        }
+
+        data.forEach(r=>{
+
+    let color = "black";
+
+    if(r.days_left < 0){
+        color = "gray";   // ❗ overdue
+    } 
+    else if(r.days_left == 0){
+        color = "red";    // 🔴 today
+    } 
+    else if(r.days_left <= 2){
+        color = "orange"; // ⚠ urgent
+    }
+
+    tbody.innerHTML += `
+<tr style="color:${color}">
+<td>${r.sr_no || ""}</td>
+<td>${r.month || ""}</td>
+<td>${r.cust_name || ""}</td>
+<td>${r.insurer || ""}</td>
+<td>${r.policy_type || ""}</td>
+<td>${r.department || ""}</td>
+<td>${r.source || ""}</td>
+<td>${r.expire_date || ""}</td>
+<td>${r.commissionable_premium || ""}</td>
+<td>${r.net_od_premium || ""}</td>
+<td>${r.tp_premium || ""}</td>
+<td>${r.pbst_np || ""}</td>
+<td>${r.gross_premium || ""}</td>
+<td>${r.ncb || ""}</td>
+<td>${r.policy_number || ""}</td>
+<td>${r.make || ""}</td>
+<td>${r.model_variant || ""}</td>
+<td>${r.vehicle_category || ""}</td>
+<td>${r.passengers_gvw || ""}</td>
+<td>${r.vehicle_no || ""}</td>
+<td>${r.cc || ""}</td>
+<td>${r.fuel || ""}</td>
+<td>${r.rto_name || ""}</td>
+<td>${r.ref_name || ""}</td>
+<td>${r.policy_pdf ? `<a href='/static/uploads/policies/${r.policy_pdf}' target='_blank'>View</a>` : 'No File'}</td>
+<td>
+${r.mail ? `<a href="mailto:${r.mail}?subject=Policy Renewal Reminder&body=Dear ${r.cust_name}, your policy expires on ${r.expire_date}. Please renew it." target="_blank">📧 Email</a>` : "No Email"}
+</td>
+<td>${r.phone || ""}</td>
+<td><a href="https://wa.me/${r.phone}" target="_blank">WhatsApp</a></td>
+<td>${r.days_left ?? ""}</td>
+</tr>`;
+});
+    });
+}
+
+
+function sendBulkWhatsApp(){
+
+    // 🔥 get current filter selection
+    let days = document.getElementById("renewalDays").value;
+
+    // default → send only urgent if user didn’t select
+    let url = "/get_renewals";
+
+    if(days !== "all"){
+        url += "?days=" + days;
+    }
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.length === 0){
+            alert("No customers to send ❌");
+            return;
+        }
+
+        let count = 0;
+
+        data.forEach((r, index) => {
+
+            if(!r.phone) return; // skip if no phone
+
+            let msg = `Reminder: Dear ${r.cust_name}, your policy expires on ${r.expire_date}. Please renew on time.`;
+
+            let phone = r.phone.toString().replace(/\D/g, ""); // remove spaces, +, etc
+
+// if number starts with 0 → remove it
+if(phone.startsWith("0")){
+    phone = phone.substring(1);
+}
+
+// if no country code → add India code
+if(phone.length === 10){
+    phone = "91" + phone;
+}
+
+let whatsappURL = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+
+            // ⏱ delay to avoid popup blocking
+            setTimeout(() => {
+                window.open(whatsappURL, "_blank");
+            }, index * 800);
+
+            count++;
+        });
+
+        alert(count + " WhatsApp tabs opened ✅");
+    });
+}
+
+
+function sendBulkEmail(){
+
+    let days = document.getElementById("renewalDays").value;
+
+    let url = "/send_bulk_email";
+
+    if(days !== "all"){
+        url += "?days=" + days;
+    }
+
+    fetch(url)
+.then(res => res.json())
+.then(data => {
+    alert(data.sent + " Emails sent ✅");
+})
+.catch(err => {
+    alert("❌ Email sending failed");
+});
+}
+
+
+
+// 🔍 SEARCH
+function searchRenewals(){
+
+    let input = document.getElementById("renewalSearchInput").value.toLowerCase();
+
+    let rows = document.querySelectorAll("#renewalsTable tbody tr");
+
+    rows.forEach(row=>{
+
+        let text = row.innerText.toLowerCase();
+
+        if(text.includes(input)){
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+}
+
+// 🔄 RESET
+function resetRenewals(){
+
+    document.getElementById("renewalSearchInput").value = "";
+
+    let rows = document.querySelectorAll("#renewalsTable tbody tr");
+
+    rows.forEach(row => {
+        row.style.display = "";
+    });
+}
+
+</script>
+<a onclick="loadPage('reviews')">⭐ Reviews</a>
+
+<div class="menu">
+    <a onclick="toggleSettingsMenu()">⚙ Settings ▼</a>
+
+    <div id="settingsMenu" style="display:none; padding-left:15px;">
+        <a onclick="loadPage('settings_profile')">👤 Profile</a>
+        <a onclick="loadPage('settings_password')">🔒 Change Password</a>
+    </div>
+</div>
+
+
+<script>
+function toggleSettingsMenu() {
+    let menu = document.getElementById("settingsMenu");
+
+    if (menu.style.display === "none" || menu.style.display === "") {
+        menu.style.display = "block";
+    } else {
+        menu.style.display = "none";
+    }
+}
+</script>
+
+
+<a href="/logout">Logout</a>
+
+</div>
+</div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main" id="content">
+        <h2>Welcome to NSure Insurance Dashboard</h2>
+    </div>
+
+</div>
+
+<script>
+// ------------------------- Page Loading -------------------------
+function loadPage(page){
+    fetch("/"+page)
+    .then(response => response.text())
+    .then(data=>{
+        document.getElementById("content").innerHTML = data;
+
+        // Run dashboard script after page loads
+        if(page === "dashboard_page"){
+            setTimeout(loadDashboard, 500);
+        }
+    })
+}
+
+
+function exportFiltered(){
+
+    let agent = document.getElementById("agent").value;
+    let month = document.getElementById("monthColumn").value;
+    let exp_month = document.getElementById("expiryMonth").value;
+    let year = document.getElementById("year").value;
+    let policy_type = document.getElementById("policy_type").value;
+
+    let url = "/export_excel?";
+
+    if(agent) url += "agent=" + agent + "&";
+    if(month) url += "month=" + month + "&";
+    if(exp_month) url += "exp_month=" + exp_month + "&";
+    if(year) url += "year=" + year + "&";
+    if(policy_type) url += "policy_type=" + policy_type;
+
+    window.open(url, "_blank");
+}
+
+// ------------------------- Dashboard Scripts -------------------------
+function loadDashboard(){
+    fetch("/dashboard_data")
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("customers").innerText = data.total_customers
+        document.getElementById("policies").innerText = data.total_policies
+        document.getElementById("today").innerText = "₹" + data.today
+        document.getElementById("month").innerText = "₹" + data.month
+
+        loadRenewals(data.renewals)
+        loadAgents(data.agents)
+        createCharts(data)
+    })
+}
+
+function loadRenewals(list){
+    let container = document.getElementById("renewals")
+    if(!container) return
+    let html=""
+    list.forEach(r=>{
+        html+=`<div class="alert"><b>${r.name}</b><br>${r.policy} expires on ${r.date}</div>`
+    })
+    container.innerHTML = html
+}
+
+function loadAgents(agents){
+    let html=""
+    agents.forEach(a=>{
+        html+=`<tr>
+        <td>${a.name}</td>
+        <td>${a.policies}</td>
+        <td>₹${a.revenue}</td>
+        </tr>`
+    })
+    document.getElementById("agentsTable").innerHTML = html
+}
+
+function createCharts(data){
+
+    // 🔥 Insurance Monthly Chart
+    let datasets = []
+
+    for(let policy in data.insurance_monthly){
+        datasets.push({
+            label: policy,
+            data: data.insurance_monthly[policy],
+            fill: false,
+            tension: 0.3
+        })
+    }
+
+    new Chart(document.getElementById("insuranceChart"),{
+        type:"line",
+        data:{
+            labels:data.month_labels,
+            datasets:datasets
+        },
+        options:{responsive:true}
+    })
+
+    // existing monthly chart
+    new Chart(document.getElementById("monthlyChart"),{
+        type:"line",
+        data:{
+            labels:data.month_labels,
+            datasets:[{
+                label:"Total Monthly Revenue",
+                data:data.month_values,
+                borderColor:"#27ae60",
+                fill:false
+            }]
+        },
+        options:{responsive:true}
+    })
+}
+
+
+// ------------------------- Sidebar Toggle -------------------------
+function toggleCustomerMenu(){
+    let menu = document.getElementById("customerMenu")
+    menu.style.display = menu.style.display === "none" ? "block" : "none"
+}
+
+
+
+function searchTable(inputId, tableId) {
+
+    let input = document.getElementById(inputId).value.toLowerCase();
+    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+
+    rows.forEach(row => {
+
+        let text = row.innerText.toLowerCase(); // ✅ whole row
+
+        if (text.includes(input)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+}
+
+function resetTable(inputId, tableId) {
+    document.getElementById(inputId).value = "";
+    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    rows.forEach(row => row.style.display = "");
+}
+
+
+function filterInsurance(type) {
+    let rows = document.querySelectorAll("#policyTable tbody tr");
+    rows.forEach(row => {
+        let policy = row.cells[4].innerText.trim(); // 5th column
+        row.style.display = policy.toLowerCase().includes(type.toLowerCase()) ? "" : "none";
+    });
+    resetTable("searchInput", "policyTable");
+}
+
+
+
+
+// ------------------------- Auto-load Dashboard -------------------------
+window.onload = function(){
+    loadPage("dashboard_page")
+}
+
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

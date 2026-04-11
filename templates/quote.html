@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Get Insurance Quote</title>
+<style>
+
+body{
+font-family:Poppins;
+background:#f5f7fa;
+padding:40px;
+}
+
+.quote-box{
+max-width:600px;
+margin:auto;
+background:white;
+padding:40px;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.quote-box h2{
+text-align:center;
+margin-bottom:25px;
+color:#003c99;
+}
+
+.quote-box input,
+.quote-box select,
+.quote-box textarea{
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+.quote-box button{
+width:100%;
+padding:14px;
+background:linear-gradient(90deg,#0052cc,#00c6ff);
+border:none;
+color:white;
+font-weight:bold;
+border-radius:8px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="quote-box">
+
+<h2>Get Insurance Quote</h2>
+
+<form method="POST">
+
+<input type="text" name="name" placeholder="Full Name" required>
+
+<input type="email" name="email" placeholder="Email Address" required>
+
+<input type="text" name="phone" placeholder="Phone Number" required>
+
+<select name="insurance_type" required>
+<option value="">Select Insurance Type</option>
+<option>Vehicle Insurance</option>
+<option>Life Insurance</option>
+<option>Health Insurance</option>
+<option>Home Insurance</option>
+<option>Business Insurance</option>
+<option>Property Insurance</option>
+</select>
+
+<label>Rating:</label>
+<select name="rating" required>
+  <option value="5">⭐⭐⭐⭐⭐</option>
+  <option value="4">⭐⭐⭐⭐</option>
+  <option value="3">⭐⭐⭐</option>
+  <option value="2">⭐⭐</option>
+  <option value="1">⭐</option>
+</select>
+
+<textarea name="message" placeholder="Describe your requirement"></textarea>
+
+<button type="submit">Submit Request</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

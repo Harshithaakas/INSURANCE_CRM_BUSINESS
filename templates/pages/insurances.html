@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Insurances</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+padding:20px;
+}
+
+/* title */
+
+.page-title{
+font-size:24px;
+margin-bottom:20px;
+font-weight:bold;
+}
+
+/* cards */
+
+.card-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-3px);
+}
+
+/* table */
+
+.table-container{
+background:white;
+border-radius:8px;
+overflow-x:auto;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:2000px;
+}
+
+th{
+background:#f1f2f6;
+padding:10px;
+text-align:left;
+font-size:13px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #eee;
+font-size:13px;
+}
+
+tr:hover{
+background:#fafafa;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+<div class="page-title">Insurance Overview</div>
+
+<!-- SUMMARY CARDS -->
+
+<div class="card-grid">
+
+{% for s in summary %}
+
+<div class="card" onclick="filterInsurance('{{s.policy_type}}')">
+
+<h3>{{ s.policy_type }}</h3>
+
+<p>Policies: {{ s.policies }}</p>
+
+<p>Revenue: ₹{{ s.revenue }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<div class="search-box">
+<input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Search anything..."
+    onkeyup="searchTable('searchInput','policyTable')"
+>
+    <button onclick="resetTable('searchInput', 'policyTable')">Reset</button>
+</div>
+
+
+
+
+
+
+
+
+<!-- POLICIES TABLE -->
+
+<div class="table-container">
+
+<table id="policyTable">
+
+<thead>
+
+<tr>
+
+<th>Sr No</th>
+<th>Month</th>
+<th>Customer</th>
+<th>Insurer</th>
+<th>Policy Type</th>
+<th>Department</th>
+<th>Source</th>
+<th>Expire Date</th>
+<th>Commissionable Premium</th>
+<th>Net OD Premium</th>
+<th>TP Premium</th>
+<th>PBST NP</th>
+<th>Gross Premium</th>
+<th>NCB</th>
+<th>Policy Number</th>
+<th>Make</th>
+<th>Model Variant</th>
+<th>Vehicle Category</th>
+<th>Passengers GVW</th>
+<th>Vehicle No</th>
+<th>CC</th>
+<th>Fuel</th>
+<th>RTO</th>
+<th>Agent</th>
+<th>PDF</th>
+<th>Email</th>
+<th>Phone</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for p in policies %}
+
+<tr>
+
+<td>{{ p.sr_no }}</td>
+<td>{{ p.month }}</td>
+<td>{{ p.cust_name }}</td>
+<td>{{ p.insurer }}</td>
+<td>{{ p.policy_type }}</td>
+<td>{{ p.department }}</td>
+<td>{{ p.source }}</td>
+<td>{{ p.expire_date }}</td>
+<td>{{ p.commissionable_premium }}</td>
+<td>{{ p.net_od_premium }}</td>
+<td>{{ p.tp_premium }}</td>
+<td>{{ p.pbst_np }}</td>
+<td>{{ p.gross_premium }}</td>
+<td>{{ p.ncb }}</td>
+<td>{{ p.policy_number }}</td>
+<td>{{ p.make }}</td>
+<td>{{ p.model_variant }}</td>
+<td>{{ p.vehicle_category }}</td>
+<td>{{ p.passengers_gvw }}</td>
+<td>{{ p.vehicle_no }}</td>
+<td>{{ p.cc }}</td>
+<td>{{ p.fuel }}</td>
+<td>{{ p.rto_name }}</td>
+<td>{{ p.ref_name }}</td>
+
+<td>
+{% if p.policy_pdf %}
+<a href="/static/uploads/policies/{{p.policy_pdf}}" target="_blank">View</a>
+{% else %}
+No File
+{% endif %}
+</td>
+
+<td>{{ p.mail }}</td>
+<td>{{ p.phone }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</body>
+</html>

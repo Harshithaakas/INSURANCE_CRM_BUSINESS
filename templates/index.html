@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSure Insurance</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* GLOBAL */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+body { background: #f5f7fa; color: #222; overflow-x: hidden; }
+a { text-decoration: none; }
+
+/* HEADER */
+header {
+  background: #fff;
+  padding: 15px 60px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* LOGO */
+.brand-logo-img { height: 70px; cursor: pointer; transition: transform 0.3s ease; }
+.brand-logo-img:hover { transform: scale(1.05); }
+
+/* NAV */
+.nav-center { display: flex; justify-content: center; gap: 35px; }
+.nav-center a {
+  color: #003c99; font-weight: 600; position: relative; padding: 5px 0;
+}
+.nav-center a::after {
+  content: "";
+  position: absolute;
+  width: 0; height: 3px; background: linear-gradient(90deg,#0052cc,#00c6ff);
+  left: 0; bottom: -5px; transition: 0.3s ease;
+}
+.nav-center a:hover::after { width: 100%; }
+
+/* NAV RIGHT */
+.nav-right a { margin-left: 15px; padding: 8px 16px; border-radius: 6px; font-weight: 500; }
+.nav-right .btn { background: linear-gradient(90deg,#0052cc,#00c6ff); color: #fff; }
+
+/* PROFILE BOX */
+.profile-box {
+  display: none;
+  position: absolute; top: 75px; right: 60px;
+  background: #fff; padding: 15px; border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 999;
+}
+.profile-box button {
+  background: linear-gradient(90deg,#0052cc,#00c6ff);
+  border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;
+  color: #fff;
+}
+
+/* HERO */
+.hero {
+  height: 90vh;
+  background: linear-gradient(rgba(0,60,153,0.7), rgba(0,60,153,0.7)),
+              url("https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+  display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+  position: relative; overflow: hidden;
+}
+.hero h1 { font-size: 52px; margin-bottom: 20px; animation: slideInTop 1s ease-out; }
+.hero p { max-width: 700px; margin: auto; line-height: 1.8; font-size: 18px; opacity: 0; animation: fadeIn 2s forwards; animation-delay: 0.5s; }
+.hero a {
+  display: inline-block;
+  margin-top: 30px;
+  background: linear-gradient(90deg,#00c6ff,#0052cc);
+  color: #fff; padding: 16px 30px; border-radius: 50px; font-weight: bold;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3); transform: translateY(0);
+}
+.hero a:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.35); }
+
+/* ANIMATIONS */
+@keyframes slideInTop { 0% { transform: translateY(-50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes scaleUp { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* SECTIONS */
+section { padding: 50px 60px; }
+.section-white { background: #f9faff; }
+
+.title { text-align: center; font-size: 36px; margin-bottom: 30px; color: #003c99; position: relative; }
+.title::after {
+  content: "";
+  width: 60px; height: 4px; background: linear-gradient(90deg,#0052cc,#00c6ff);
+  display: block; margin: 10px auto 0; border-radius: 2px;
+}
+
+/* INSURANCE CARDS */
+.insurance-section{
+max-width:1200px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:90px;
+}
+
+/* ROW */
+.insurance-row{
+display:flex;
+align-items:center;
+gap:60px;
+flex-wrap:wrap;
+}
+
+/* ALTERNATE */
+.insurance-row.reverse{
+flex-direction:row-reverse;
+}
+
+/* IMAGE */
+.insurance-image{
+flex:1;
+min-width:300px;
+overflow:hidden;
+border-radius:18px;
+}
+
+.insurance-image img{
+width:100%;
+border-radius:18px;
+transition:transform .6s ease, box-shadow .6s ease;
+cursor:pointer;
+}
+
+/* IMAGE HOVER ANIMATION */
+.insurance-image img:hover{
+transform:scale(1.08) rotateY(10deg);
+box-shadow:0 30px 60px rgba(0,0,0,0.25);
+}
+
+/* TEXT */
+.insurance-text{
+flex:1;
+min-width:300px;
+}
+
+.insurance-text h3{
+font-size:28px;
+color:#003c99;
+margin-bottom:15px;
+}
+
+.insurance-text p{
+font-size:17px;
+line-height:1.8;
+margin-bottom:15px;
+}
+
+.insurance-text ul{
+margin-bottom:20px;
+padding-left:20px;
+}
+
+.insurance-text ul li{
+margin-bottom:8px;
+}
+
+.insurance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+.ins-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.4s, box-shadow 0.4s;
+  cursor: pointer;
+}
+.ins-card:hover {
+  transform: translateY(-15px) rotateX(3deg);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.18);
+}
+.ins-card i { font-size: 36px; color: #0052cc; margin-bottom: 15px; }
+.ins-card h4 { color: #0052cc; margin-bottom: 12px; font-size: 20px; }
+.ins-card p { font-size: 15px; line-height: 1.8; }
+.learn-btn {
+  margin-top: 15px; background: linear-gradient(90deg,#0052cc,#00c6ff);
+  color: #fff; border: none; padding: 12px 20px; border-radius: 50px;
+  cursor: pointer; font-weight: 600;
+}
+.learn-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+.more-info { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; margin-top: 10px; font-size: 14px; line-height: 1.7; }
+
+/* TEAM CARDS */
+.team-container { display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; }
+.team-card {
+  background: #fff; color: #333; width: 320px; padding: 30px;
+  border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: scale(0.95); opacity: 0; animation: scaleUp 0.6s forwards; animation-delay: 0.2s;
+}
+.team-card:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+.team-card img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; }
+.book-btn { background: linear-gradient(90deg,#0052cc,#00c6ff); color: #fff; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; }
+
+/* PARTNERS */
+.partners { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 40px; max-width: 1200px; margin: auto; align-items: center; }
+.partner-box {
+  background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  display: flex; align-items: center; justify-content: center; transition: transform 0.3s, box-shadow 0.3s;
+}
+.partner-box:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+.partner-box img { max-width: 180px; max-height: 100px; object-fit: contain; }
+
+/* FORM & QUESTION */
+.question-box { background: #fff; color: #333; max-width: 500px; margin: auto; padding: 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+.question-box input, .question-box textarea {
+  width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 10px; font-size: 15px;
+}
+.question-box button {
+  background: linear-gradient(90deg,#0052cc,#00c6ff); color: #fff; border: none; padding: 12px 20px; border-radius: 50px;
+  font-weight: 600; cursor: pointer;
+}
+.question-box button:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+/* FOOTER */
+footer { background: #002766; color: #fff; text-align: center; padding: 25px; font-weight: 500; }
+
+/* MODAL */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
+.modal-content { background: #fff; padding: 30px; border-radius: 15px; width: 360px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+.modal-content input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 10px; }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 90vh;
+  background: linear-gradient(rgba(0,60,153,0.5), rgba(0,60,153,0.5)),
+              url("https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  perspective: 1000px; /* subtle 3D effect */
+}
+
+.hero h1 {
+  font-size: 52px;
+  margin-bottom: 20px;
+  transform: translateY(-50px);
+  opacity: 0;
+  animation: slideUp 1s forwards;
+}
+.hero p {
+  max-width: 700px;
+  line-height: 1.8;
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+  animation-delay: 0.5s;
+}
+.hero a {
+  display: inline-block;
+  margin-top: 30px;
+  background: linear-gradient(90deg,#00c6ff,#0052cc);
+  color: #fff;
+  padding: 16px 30px;
+  border-radius: 50px;
+  font-weight: bold;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transform: translateY(20px);
+  animation: slideUp 2s forwards;
+  animation-delay: 1s;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.hero a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+}
+
+@keyframes slideUp { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.learn-btn {
+  background: linear-gradient(90deg, #0052cc, #00c6ff);
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+@keyframes gradientShift {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+.reveal {
+  opacity: 0;
+  transition: all 1s ease;
+}
+
+/* Directions */
+.reveal-bottom { transform: translateY(80px); }
+.reveal-left { transform: translateX(-80px); }
+.reveal-right { transform: translateX(80px); }
+.reveal-zoom { transform: scale(0.8); }
+
+.reveal.active {
+  opacity: 1;
+  transform: translate(0,0) scale(1);
+}
+
+.text-slide-left {
+  opacity: 0;
+  transform: translateX(-100px);
+  animation: slideLeft 1s forwards;
+}
+
+.text-slide-right {
+  opacity: 0;
+  transform: translateX(100px);
+  animation: slideRight 1s forwards;
+}
+
+@keyframes slideLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideRight {
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.ins-card {
+  animation: float 4s ease-in-out infinite;
+}
+
+.ins-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 198, 255, 0.3);
+}
+
+/* ===== ADVANCED ANIMATIONS ===== */
+
+/* Smooth fade + slide */
+.reveal {
+  opacity: 0;
+  transform: translateY(80px);
+  transition: all 0.9s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* LEFT RIGHT ENTRY */
+.reveal-left { transform: translateX(-120px); }
+.reveal-right { transform: translateX(120px); }
+
+.reveal-left.active,
+.reveal-right.active {
+  transform: translateX(0);
+}
+
+/* STAGGER EFFECT */
+.ins-card {
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+.ins-card.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* FLOATING EFFECT */
+@keyframes floatSoft {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.ins-card:hover {
+  animation: floatSoft 2s ease-in-out infinite;
+}
+
+/* PARTNER LOGO GLOW */
+.partner-box:hover {
+  transform: scale(1.08);
+  box-shadow: 0 20px 40px rgba(0, 198, 255, 0.4);
+}
+
+/* DESIGNATED PARTNER IMAGE EFFECT */
+.partner-img {
+  transition: all 0.4s ease;
+}
+
+.partner-img:hover {
+  transform: scale(1.05) rotateY(8deg);
+}
+
+/* TEXT ANIMATION */
+.text-animate {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.text-animate.active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.8s ease;
+}
+
+/* GLASS EFFECT */
+.glass {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0,198,255,0.25), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: transform 0.08s linear;
+}
+
+#particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero {
+  position: relative;
+}
+
+.hero div {
+  position: relative;
+  z-index: 2;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  scroll-behavior: smooth;
+}
+
+#loader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #002766;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #fff;
+  border-top: 5px solid #00c6ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.magnetic {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.parallax {
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.contact-card {
+  background: rgba(255,255,255,0.08);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.contact-card i {
+  font-size: 35px;
+  margin-bottom: 15px;
+  color: #00c6ff;
+}
+
+.contact-card h4 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.contact-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,198,255,0.3);
+}
+button:hover, a:hover {
+  filter: brightness(1.1);
+}
+section {
+  padding: 50px 60px;
+}
+.title {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* VISION MISSION CONTAINER */
+.vm-container{
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+justify-content:center;
+max-width:1100px;
+margin:auto;
+}
+
+/* CARD STYLE */
+.vm-card{
+flex:1;
+min-width:280px;
+padding:40px;
+border-radius:20px;
+background:#fff;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+position:relative;
+overflow:hidden;
+transition:0.4s;
+}
+
+/* ICON */
+.vm-card i{
+font-size:40px;
+color:#0052cc;
+margin-bottom:15px;
+animation: floatIcon 3s ease-in-out infinite;
+}
+
+/* HEADINGS */
+.vm-card h3{
+font-size:24px;
+margin-bottom:15px;
+color:#003c99;
+}
+
+/* TEXT */
+.vm-card p{
+font-size:16px;
+line-height:1.7;
+color:#555;
+}
+
+/* HOVER EFFECT */
+.vm-card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 20px 40px rgba(0,198,255,0.25);
+}
+
+/* GRADIENT BORDER EFFECT */
+.vm-card{
+flex:1;
+min-width:280px;
+padding:40px;
+border-radius:20px;
+background:#fff;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+position:relative;
+overflow:hidden;
+transition:0.4s;
+border:2px solid transparent;
+background-image:linear-gradient(#fff,#fff), 
+linear-gradient(120deg,#00c6ff,#0052cc);
+background-origin:border-box;
+background-clip:padding-box,border-box;
+}
+
+/* ICON FLOAT ANIMATION */
+@keyframes floatIcon{
+0%{transform:translateY(0);}
+50%{transform:translateY(-8px);}
+100%{transform:translateY(0);}
+}
+
+body {
+  background: linear-gradient(180deg, #f5f7fa, #e8f0ff);
+}
+
+
+
+</style>
+</head>
+<div id="loader">
+  <div class="spinner"></div>
+</div>
+
+<body>
+
+<header>
+  <img src="{{ url_for('static', filename='images/logo.png') }}" 
+     alt="NSure Logo" class="brand-logo-img">
+
+
+  <div class="nav-center">
+    <a href="#insurance">Insurances</a>
+    <a href="#contact">Support</a>
+    <a href="{{ url_for('quote') }}">Get a Quote</a>
+    
+  </div>
+
+  <div class="nav-right" id="navRight">
+   <a href="{{ url_for('login') }}">Login</a>
+  </div>
+
+  <div class="profile-box" id="profileBox">
+    <p id="profileName" style="margin-bottom:10px;font-weight:bold;"></p>
+    <button onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+   <canvas id="particles"></canvas>
+<div>
+<h1 class="text-slide-left">Your Protection, Our Commitment</h1>
+<p class="text-slide-right">Complete protection for your life, health, vehicle, home and business with trusted financial coverage and long-term benefits and guaranteed support.</p>
+<a href="#insurance">Explore Insurance Plans</a>
+</div>
+</div>
+
+<!-- 1. TYPES OF INSURANCE -->
+<section id="insurance" class="section-light"></section>
+
+<h2 class="title reveal reveal-bottom">Types of Insurance</h2>
+
+<div class="insurance-section">
+
+<!-- VEHICLE -->
+<div class="insurance-row reveal reveal-left">
+
+<div class="insurance-image">
+<img src="{{ url_for('static', filename='images/vehicle.png') }}">
+</div>
+
+<div class="insurance-text">
+<h3><i class="fas fa-car"></i> Vehicle Insurance</h3>
+<p>
+Vehicle insurance protects your car or bike against unexpected damages,
+accidents, theft, fire, and natural disasters. It also provides
+third-party liability coverage required by law. With comprehensive
+vehicle insurance, you can drive confidently knowing that repair costs
+and liabilities are financially protected.
+</p>
+
+<ul>
+<li>Accident & collision coverage</li>
+<li>Theft and fire protection</li>
+<li>Third-party liability protection</li>
+<li>Cashless repair network support</li>
+</ul>
+
+
+</div>
+
+</div>
+
+
+<!-- LIFE -->
+<div class="insurance-row reverse reveal reveal-right">
+
+<div class="insurance-image">
+<img src="{{ url_for('static', filename='images/life.png') }}">
+</div>
+
+<div class="insurance-text">
+<h3><i class="fas fa-heart"></i> Life Insurance</h3>
+<p>
+Life insurance ensures the financial security of your loved ones in the
+event of unforeseen circumstances. It provides a guaranteed payout to
+your family, helping them manage daily expenses, education costs,
+and future financial goals even in your absence.
+</p>
+
+<ul>
+<li>Financial security for family</li>
+<li>Long-term savings and investment options</li>
+<li>Tax benefits under applicable laws</li>
+<li>Flexible premium payment plans</li>
+</ul>
+
+
+</div>
+
+</div>
+
+
+<!-- HEALTH -->
+<div class="insurance-row reveal reveal-left">
+
+<div class="insurance-image">
+<img src="{{ url_for('static', filename='images/health.png') }}">
+</div>
+
+<div class="insurance-text">
+<h3><i class="fas fa-hospital"></i> Health Insurance</h3>
+<p>
+Health insurance covers medical expenses such as hospitalization,
+surgeries, diagnostic tests, and treatments. It helps reduce the
+financial burden during medical emergencies while ensuring you receive
+quality healthcare services when needed.
+</p>
+
+<ul>
+<li>Hospitalization & surgery coverage</li>
+<li>Pre & post hospitalization benefits</li>
+<li>Emergency medical services</li>
+<li>Cashless treatment at network hospitals</li>
+</ul>
+
+
+</div>
+
+</div>
+
+
+<!-- HOME -->
+<div class="insurance-row reverse reveal reveal-right">
+
+<div class="insurance-image">
+<img src="{{ url_for('static', filename='images/home.png') }}">
+</div>
+
+<div class="insurance-text">
+<h3><i class="fas fa-home"></i> Home Insurance</h3>
+<p>
+Home insurance protects your house and belongings from risks such as
+fire, theft, natural disasters, and accidental damages. It ensures your
+property and valuables remain financially secure in case of unexpected
+events.
+</p>
+
+<ul>
+<li>Protection against fire & disasters</li>
+<li>Coverage for household valuables</li>
+<li>Burglary and theft protection</li>
+<li>Structural damage coverage</li>
+</ul>
+
+</div>
+
+</div>
+
+
+<!-- BUSINESS -->
+<div class="insurance-row reveal reveal-left">
+
+<div class="insurance-image">
+<img src="{{ url_for('static', filename='images/business.png') }}">
+</div>
+
+<div class="insurance-text">
+<h3><i class="fas fa-briefcase"></i> Business Insurance</h3>
+<p>
+Business insurance helps safeguard your company from financial losses
+caused by accidents, property damage, legal liabilities, and operational
+interruptions. It ensures business continuity and protects both assets
+and employees.
+</p>
+
+<ul>
+<li>Property and asset protection</li>
+<li>Employee coverage options</li>
+<li>Public liability protection</li>
+<li>Business interruption coverage</li>
+</ul>
+
+
+</div>
+
+</div>
+
+
+<!-- PROPERTY -->
+<div class="insurance-row reverse reveal reveal-right">
+
+<div class="insurance-image">
+<img src="{{ url_for('static', filename='images/property.png') }}">
+</div>
+
+<div class="insurance-text">
+<h3><i class="fas fa-building"></i> Property Insurance</h3>
+<p>
+Property insurance protects commercial and residential properties
+against damage caused by fire, storms, floods, vandalism, and other
+unexpected events. It ensures that property owners can recover quickly
+without heavy financial losses.
+</p>
+
+<ul>
+<li>Fire and natural disaster protection</li>
+<li>Coverage for buildings and assets</li>
+<li>Repair and reconstruction support</li>
+<li>Financial risk protection</li>
+</ul>
+
+
+</div>
+
+</div>
+
+</div>
+
+</class=>
+
+<!-- 2. ADVISORS -->
+<!-- 2. DESIGNATED PARTNERS -->
+<section class="section-white">
+
+<h2 class="title">Designated Partners</h2>
+
+<div style="max-width:1200px;margin:auto;">
+
+<!-- NAARESH -->
+<div class="reveal reveal-left" style="display:flex;align-items:center;gap:50px;margin-bottom:70px;flex-wrap:wrap;">
+
+<div style="flex:1;min-width:300px;text-align:center;">
+<img src="{{ url_for('static', filename='images/naresh.png') }}" 
+     class="partner-img reveal reveal-left" 
+     style="width:280px;border-radius:10px;">
+<h3 style="margin-top:15px;">Mr. Naresh Singh Kathari</h3>
+</div>
+
+<div class="reveal reveal-right text-animate" style="flex:2;min-width:300px;line-height:1.8;">
+<p><strong>Mr. Naresh Singh Kathari</strong> brings over 12 years of extensive experience in the insurance industry, specializing in both general and life insurance sectors.</p>
+
+<p>He has deep expertise in customer relationship management, claims handling, and personalized financial solutions tailored to individual and business needs.</p>
+
+<p>His strategic knowledge and professional approach ensure that clients receive efficient claim settlements, transparent guidance, and long-term financial security planning.</p>
+
+<p>Mr. Naresh combines integrity, professionalism, and industry insight, making him a trusted advisor for comprehensive insurance solutions.</p>
+</div>
+
+</div>
+
+<!-- SUBASH -->
+<div class="reveal reveal-left" style="display:flex;align-items:center;gap:50px;margin-bottom:70px;flex-wrap:wrap;">
+
+<div style="flex:1;min-width:300px;text-align:center;">
+<img src="{{ url_for('static', filename='images/subash.png') }}" 
+     class="partner-img reveal reveal-left" 
+     style="width:280px;border-radius:10px;">
+<h3 style="margin-top:15px;">Mr. Subash Neupane</h3>
+</div>
+
+<div class="reveal reveal-right text-animate" style="flex:2;min-width:300px;line-height:1.8;">
+<p><strong>Mr. Subash Neupane</strong> is a dedicated insurance professional with over 5 years of experience in delivering reliable insurance solutions.</p>
+
+<p>He specializes in product advisory, claims coordination, and client servicing across various insurance categories including health, vehicle, and property insurance.</p>
+
+<p>His commitment to customer satisfaction ensures smooth processing, clear communication, and timely resolution of client concerns.</p>
+
+<p>Mr. Subash is known for his proactive approach and dedication to providing efficient and trustworthy service to every client.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- 3. PARTNERS -->
+ 
+<section id="partners" class="section-light reveal reveal-bottom">
+  <h2 class="title">Our Trusted Partner Companies</h2>
+  <div class="partners">
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/tata-aig.png') }}" alt="TATA AIG"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/digit.png') }}" alt="Digit Insurance"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/hdfc-ergo.png') }}" alt="HDFC ERGO"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/oriental.png') }}" alt="Oriental Insurance"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/icici-prudential.png') }}" alt="ICICI Prudential"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/liberty.png') }}" alt="Liberty General Insurance"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/tata-aia.png') }}" alt="TATA AIA"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/hdfc-life.png') }}" alt="HDFC Life"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/max-life.png') }}" alt="Max Life Insurance"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/lic.png') }}" alt="LIC"></div>
+    <div class="partner-box"><img src="{{ url_for('static', filename='images/sbi.png') }}" alt="SBI Life"></div>
+  </div>
+</section>
+
+<!-- 4. VISION & MISSION -->
+
+<section class="section-white reveal reveal-bottom">
+<h2 class="title reveal reveal-bottom">Vision & Mission</h2>
+
+<div class="vm-container">
+
+<div class="vm-card vision reveal reveal-left">
+<i class="fas fa-eye"></i>
+<h3>Our Vision</h3>
+<p>
+To become India’s leading financial advisory and insurance services firm,
+empowering individuals and businesses to achieve long-term financial
+security, stability, and prosperity through trusted guidance and
+innovative solutions.
+</p>
+</div>
+
+<div class="vm-card mission reveal reveal-right">
+<i class="fas fa-bullseye"></i>
+<h3>Our Mission</h3>
+<p>
+To provide transparent, client-focused insurance and financial solutions
+that simplify complex decisions while delivering personalized advisory
+and professional service tailored to each customer’s goals.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- 5. CONTACT US -->
+<section id="contact" class="section-light reveal reveal-bottom">
+  <h2 class="title">Contact Us</h2>
+
+  <div class="contact-grid">
+
+<div class="contact-card reveal reveal-bottom">
+      <i class="fas fa-map-marker-alt"></i>
+      <h4>Address</h4>
+      <p>NSure Insurance IMF<br>
+      4th Floor, Awifs VASAVI MPM Grand<br>
+      Ameerpet, Hyderabad - 500073</p>
+    </div>
+
+    <div class="contact-card">
+      <i class="fas fa-envelope"></i>
+      <h4>Email</h4>
+      <p>policy@nsureinsurance.com</p>
+    </div>
+
+    <div class="contact-card">
+      <i class="fas fa-phone"></i>
+      <h4>Phone</h4>
+      <p>+91-7997180616</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>© 2026 NSure Insurance. All Rights Reserved.</footer>
+
+<!-- MODAL -->
+<div class="modal" id="appointmentModal">
+<div class="modal-content">
+<h3>Book Appointment</h3>
+<input type="text" placeholder="Your Name">
+<input type="email" placeholder="Your Email">
+<input type="date">
+<button onclick="closeModal()">Submit</button>
+</div>
+</div>
+
+<script>
+function toggleInfo(btn){
+  let content = btn.nextElementSibling;
+  if(content.style.maxHeight){
+    content.style.maxHeight = null;
+  }else{
+    content.style.maxHeight = content.scrollHeight + "px";
+  }
+}
+
+function openModal(){
+  document.getElementById("appointmentModal").style.display="flex";
+}
+
+function closeModal(){
+  document.getElementById("appointmentModal").style.display="none";
+  alert("Appointment request submitted successfully!");
+}
+
+// Scroll animation
+
+
+document.querySelectorAll('.ins-card, .partner-box').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.transform = `rotateY(${(x - rect.width/2)/15}deg) rotateX(${(rect.height/2 - y)/15}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'rotateY(0deg) rotateX(0deg) translateY(0)';
+  });
+});
+
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero');
+  let offset = window.pageYOffset;
+  hero.style.backgroundPositionY = offset * 0.5 + 'px';
+});
+
+const reveals = document.querySelectorAll('.reveal');
+const cards = document.querySelectorAll('.ins-card');
+
+function revealOnScroll() {
+  const windowHeight = window.innerHeight;
+
+  reveals.forEach(el => {
+    const elementTop = el.getBoundingClientRect().top;
+
+    if (elementTop < windowHeight - 100) {
+      el.classList.add('active');
+    }
+  });
+
+  // STAGGER ANIMATION FOR CARDS
+  cards.forEach((card, index) => {
+    const top = card.getBoundingClientRect().top;
+
+    if (top < windowHeight - 100) {
+      setTimeout(() => {
+        card.classList.add('active');
+      }, index * 150); // delay one-by-one
+    }
+  });
+}
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+
+
+const glow = document.querySelector('.cursor-glow');
+
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = document.querySelector('.hero').offsetHeight;
+
+let particles = [];
+
+for(let i=0;i<60;i++){
+  particles.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*3,
+    dx: (Math.random()-0.5),
+    dy: (Math.random()-0.5)
+  });
+}
+
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,0.5)";
+    ctx.fill();
+
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+  });
+
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href'))
+      .scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").style.opacity = "0";
+    document.getElementById("loader").style.transition = "0.5s";
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+    }, 500);
+  }, 800);
+});
+
+document.querySelectorAll('.learn-btn, .hero a, .book-btn').forEach(btn => {
+  btn.classList.add('magnetic');
+
+  btn.addEventListener('mousemove', e => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width/2;
+    const y = e.clientY - rect.top - rect.height/2;
+
+    btn.style.transform = `translate(${x*0.3}px, ${y*0.3}px)`;
+  });
+
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = `translate(0,0)`;
+  });
+});
+
+const parallaxElements = document.querySelectorAll('.ins-card, .partner-box');
+
+window.addEventListener('scroll', () => {
+  let scrollY = window.pageYOffset;
+
+  parallaxElements.forEach((el, index) => {
+    let speed = (index % 5 + 1) * 0.05; // different speeds
+    el.style.transform = `translateY(${scrollY * speed * 0.05}px)`;
+  });
+});
+
+function logout(){
+  window.location.href = "/logout";
+}
+</script>
+<div class="cursor-glow"></div>
+</body>
+</html> 

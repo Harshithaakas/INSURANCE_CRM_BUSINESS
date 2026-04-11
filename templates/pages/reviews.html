@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Customer Reviews</title>
+
+<style>
+body{
+font-family:Poppins;
+background:#f5f7fa;
+padding:30px;
+}
+
+.review-summary{
+text-align:center;
+margin-bottom:40px;
+}
+
+.review-summary h2{
+color:#003c99;
+}
+
+.rating-box{
+font-size:40px;
+font-weight:bold;
+color:#f39c12;
+}
+
+.review-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.review-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.review-card:hover{
+transform:translateY(-6px);
+}
+
+.stars{
+color:#f1c40f;
+font-size:18px;
+margin:8px 0;
+}
+
+.name{
+font-weight:bold;
+color:#333;
+}
+
+.meta{
+font-size:13px;
+color:#777;
+margin-bottom:6px;
+}
+
+.message{
+color:#555;
+margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="review-summary">
+<h2>Customer Reviews</h2>
+<div class="rating-box">
+{{ avg_rating }} / 5 ⭐
+</div>
+</div>
+
+<div class="review-grid">
+
+{% for r in reviews %}
+
+<div class="review-card">
+
+<div class="name">{{ r.name }}</div>
+
+<!-- ⭐ Stars -->
+<div class="stars">
+{% set rating = (r.rating or 0) | int %}
+{% for i in range(5) %}
+    {% if i < rating %}⭐{% else %}☆{% endif %}
+{% endfor %}
+</div>
+
+<!-- 📧 Contact -->
+<div class="meta">
+📧 {{ r.email or 'Not provided' }} <br>
+📞 {{ r.phone or 'Not provided' }}
+</div>
+
+<!-- 💬 Message -->
+<div class="message">
+{{ r.message or '' }}
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+</html>

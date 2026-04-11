@@ -1,0 +1,53 @@
+<h2>👤 Profile</h2>
+
+<style>
+.form-container {
+    max-width: 500px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 15px;
+    background: #2c3e50;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1a252f;
+}
+</style>
+
+<div class="form-container">
+<form method="POST" action="/update_profile">
+
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+    </div>
+
+    <button type="submit">Update Profile</button>
+
+</form>
+</div>
