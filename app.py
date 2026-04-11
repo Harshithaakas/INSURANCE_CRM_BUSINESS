@@ -23,12 +23,13 @@ app.config['SESSION_PERMANENT'] = False
 # ---------------- DATABASE CONFIG ----------------
 
 DB_HOST     = os.environ.get("DB_HOST",     "127.0.0.1")
+DB_PORT     = os.environ.get("DB_PORT",     " 25189")
 DB_USER     = os.environ.get("DB_USER",     "crmuser")
 DB_PASSWORD = os.environ.get("DB_PASSWORD", "1234")
 DB_NAME     = os.environ.get("DB_NAME",     "insurance_crm")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+    f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?connect_timeout=30"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -53,9 +54,11 @@ mail = Mail(app)
 def get_db_connection():
     return mysql.connector.connect(
         host=DB_HOST,
+        port=int(DB_PORT),
         user=DB_USER,
         password=DB_PASSWORD,
-        database=DB_NAME
+        database=DB_NAME,
+        connection_timeout=30
     )
 
 # ---------------- DECIMAL HELPER ----------------
