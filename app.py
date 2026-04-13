@@ -772,51 +772,29 @@ def insurances():
 
 # ---------------- RENEWALS ----------------
 
-@app.route("/renewals")
-def renewals_page():
-    if session.get("role") != "admin":
-        return redirect(url_for("home"))
-    return render_template("pages/renewals.html")
-
 @app.route("/get_renewals")
 def get_renewals():
-    days = request.args.get("days")
+    days        = request.args.get("days")
     policy_type = request.args.get("policy_type")
 
-    
     conn = get_db_connection()
     cur  = conn.cursor(dictionary=True)
 
+    query  = "SELECT *, DATEDIFF(expire_date, CURDATE()) AS days_left FROM policies WHERE 1=1"
+    params = []
+
     if days == "today":
-        cur.execute("""
-            SELECT *, DATEDIFF(expire_date, CURDATE()) AS days_left
-            FROM policies
-            WHERE DATEDIFF(expire_date, CURDATE()) = 0
-        """)
+        query += " AND DATEDIFF(expire_date, CURDATE()) = 0"
     elif days == "urgent":
-        cur.execute("""
-            SELECT *, DATEDIFF(expire_date, CURDATE()) AS days_left
-            FROM policies
-            WHERE DATEDIFF(expire_date, CURDATE()) BETWEEN 0 AND 2
-        """)
+        query += " AND DATEDIFF(expire_date, CURDATE()) BETWEEN 0 AND 2"
     elif days == "overdue":
-        cur.execute("""
-            SELECT *, DATEDIFF(expire_date, CURDATE()) AS days_left
-            FROM policies
-            WHERE DATEDIFF(expire_date, CURDATE()) < 0
-        """)
+        query += " AND DATEDIFF(expire_date, CURDATE()) < 0"
     elif days and days != "all":
-        cur.execute("""
-            SELECT *, DATEDIFF(expire_date, CURDATE()) AS days_left
-            FROM policies
-            WHERE DATEDIFF(expire_date, CURDATE()) BETWEEN 0 AND %s
-        """, (int(days),))
+        query += " AND DATEDIFF(expire_date, CURDATE()) BETWEEN 0 AND %s"
+        params.append(int(days))
     else:
-        cur.execute("""
-            SELECT *, DATEDIFF(expire_date, CURDATE()) AS days_left
-            FROM policies
-            WHERE expire_date >= CURDATE()
-        """)
+        query += " AND expire_date >= CURDATE()"
+
     if policy_type:
         query += " AND policy_type = %s"
         params.append(policy_type)
@@ -831,6 +809,7 @@ def get_renewals():
         r["expire_date"] = r["expire_date"].strftime("%Y-%m-%d")
 
     return jsonify(renewals)
+
 
 
 # ---------------- SEND BULK EMAIL ----------------

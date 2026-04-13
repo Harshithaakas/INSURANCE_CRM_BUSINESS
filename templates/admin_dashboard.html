@@ -152,24 +152,18 @@ width:100%;
 <script>
 
 function loadRenewalsByDays(){
-
     let days = document.getElementById("renewalDays").value;
     let policyType = document.getElementById("policyTypeFilter").value;
 
-    let url = "/get_renewals";
+    let url = "/get_renewals?days=" + days;
 
-    if(days !== "all"){
-        url += "?days=" + days;
-    }
-     if(policyType){
+    if(policyType){
         url += "&policy_type=" + policyType;
     }
-
 
     fetch(url)
     .then(res => res.json())
     .then(data => {
-
         let tbody = document.querySelector("#renewalsTable tbody");
         tbody.innerHTML = "";
 
@@ -179,20 +173,12 @@ function loadRenewalsByDays(){
         }
 
         data.forEach(r=>{
+            let color = "black";
+            if(r.days_left < 0) color = "gray";
+            else if(r.days_left == 0) color = "red";
+            else if(r.days_left <= 2) color = "orange";
 
-    let color = "black";
-
-    if(r.days_left < 0){
-        color = "gray";   // ❗ overdue
-    } 
-    else if(r.days_left == 0){
-        color = "red";    // 🔴 today
-    } 
-    else if(r.days_left <= 2){
-        color = "orange"; // ⚠ urgent
-    }
-
-    tbody.innerHTML += `
+            tbody.innerHTML += `
 <tr style="color:${color}">
 <td>${r.sr_no || ""}</td>
 <td>${r.month || ""}</td>
@@ -219,17 +205,14 @@ function loadRenewalsByDays(){
 <td>${r.rto_name || ""}</td>
 <td>${r.ref_name || ""}</td>
 <td>${r.policy_pdf ? `<a href='/static/uploads/policies/${r.policy_pdf}' target='_blank'>View</a>` : 'No File'}</td>
-<td>
-${r.mail ? `<a href="mailto:${r.mail}?subject=Policy Renewal Reminder&body=Dear ${r.cust_name}, your policy expires on ${r.expire_date}. Please renew it." target="_blank">📧 Email</a>` : "No Email"}
-</td>
+<td>${r.mail ? `<a href="mailto:${r.mail}?subject=Policy Renewal Reminder&body=Dear ${r.cust_name}, your policy expires on ${r.expire_date}. Please renew it." target="_blank">📧 Email</a>` : "No Email"}</td>
 <td>${r.phone || ""}</td>
 <td><a href="https://wa.me/${r.phone}" target="_blank">WhatsApp</a></td>
 <td>${r.days_left ?? ""}</td>
 </tr>`;
-});
+        });
     });
 }
-
 
 function sendBulkWhatsApp(){
 
