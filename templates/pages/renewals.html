@@ -52,11 +52,6 @@ th { background:#f1f2f6; }
 </select>
 <select id="policyTypeFilter" onchange="loadRenewalsByDays()" style="padding:5px 10px; margin-left:10px;">
     <option value="">All Policy Types</option>
-    <option value="Vehicle">Vehicle</option>
-    <option value="Health">Health</option>
-    <option value="Life">Life</option>
-    <option value="Property">Property</option>
-    <option value="Business">Business</option>
 </select>
 
 </div>
@@ -124,9 +119,19 @@ th { background:#f1f2f6; }
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
+    // Load policy types dynamically from database
+    fetch("/get_policy_types")
+    .then(res => res.json())
+    .then(types => {
+        let select = document.getElementById("policyTypeFilter");
+        types.forEach(t => {
+            select.innerHTML += `<option value="${t}">${t}</option>`;
+        });
+    });
+
+    // Auto load renewals
     loadRenewalsByDays();
 });
 </script>
-
 </body>
 </html>
