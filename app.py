@@ -772,6 +772,12 @@ def insurances():
 
 # ---------------- RENEWALS ----------------
 
+@app.route("/renewals")
+def renewals_page():
+    if session.get("role") != "admin":
+        return redirect(url_for("home"))
+    return render_template("pages/renewals.html")
+
 @app.route("/get_renewals")
 def get_renewals():
     days        = request.args.get("days")
@@ -809,7 +815,6 @@ def get_renewals():
         r["expire_date"] = r["expire_date"].strftime("%Y-%m-%d")
 
     return jsonify(renewals)
-
 
 
 # ---------------- SEND BULK EMAIL ----------------
