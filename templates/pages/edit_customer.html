@@ -123,7 +123,19 @@ grid-column:1;
 
 <div class="form-container">
 
-<h2>Edit Customer</h2>
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h2 style="margin:0;">Edit Customer</h2>
+    <div style="display:flex; gap:10px;">
+        <button type="button" onclick="window.history.back()" 
+            style="padding:8px 16px; background:#95a5a6; color:white; border:none; border-radius:6px; cursor:pointer;">
+            ← Back
+        </button>
+        <button type="button" onclick="window.parent.loadPage('dashboard_page')" 
+            style="padding:8px 16px; background:#0d3b66; color:white; border:none; border-radius:6px; cursor:pointer;">
+            🏠 Dashboard
+        </button>
+    </div>
+</div>
 
 <form method="POST" enctype="multipart/form-data">
 
