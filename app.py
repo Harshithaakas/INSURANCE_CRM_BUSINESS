@@ -802,7 +802,7 @@ def get_renewals():
         query += " AND expire_date >= CURDATE()"
 
     if policy_type == "Vehicle":
-        query += " AND policy_type IN ('Motor Car', 'Motor Bike', 'Scooty', 'Motor', 'Two Wheeler', 'Four Wheeler', 'Commercial Vehicle')"
+        query += " AND policy_type IN ('Car', 'Bike', 'Scooty', 'Motor', 'Two Wheeler', 'Four Wheeler', 'Commercial Vehicle')"
     elif policy_type:
         query += " AND policy_type = %s"
         params.append(policy_type)
