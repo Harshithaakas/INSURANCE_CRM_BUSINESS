@@ -781,7 +781,9 @@ def renewals_page():
 @app.route("/get_renewals")
 def get_renewals():
     days = request.args.get("days")
+    policy_type = request.args.get("policy_type")
 
+    
     conn = get_db_connection()
     cur  = conn.cursor(dictionary=True)
 
@@ -815,7 +817,11 @@ def get_renewals():
             FROM policies
             WHERE expire_date >= CURDATE()
         """)
+    if policy_type:
+        query += " AND policy_type = %s"
+        params.append(policy_type)
 
+    cur.execute(query, params)
     renewals = cur.fetchall()
     conn.close()
 
@@ -825,6 +831,7 @@ def get_renewals():
         r["expire_date"] = r["expire_date"].strftime("%Y-%m-%d")
 
     return jsonify(renewals)
+
 
 # ---------------- SEND BULK EMAIL ----------------
 

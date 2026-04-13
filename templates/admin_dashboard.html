@@ -154,12 +154,17 @@ width:100%;
 function loadRenewalsByDays(){
 
     let days = document.getElementById("renewalDays").value;
+    let policyType = document.getElementById("policyTypeFilter").value;
 
     let url = "/get_renewals";
 
     if(days !== "all"){
         url += "?days=" + days;
     }
+     if(policyType){
+        url += "&policy_type=" + policyType;
+    }
+
 
     fetch(url)
     .then(res => res.json())
