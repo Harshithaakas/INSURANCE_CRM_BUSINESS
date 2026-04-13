@@ -8,12 +8,12 @@ df = pd.read_excel("book123.xlsx")
 df.columns = df.columns.str.strip()
 
 conn = mysql.connector.connect(
-    host="127.0.0.1",
-    user="crmuser",
-    password="1234",
-    database="insurance_crm"
+    host="mainline.proxy.rlwy.net",
+    port=25189,
+    user="root",
+    password="xlHTvOMCqGXTyBAUsgPBwIrvxoJbTMUl",
+    database="railway"
 )
-
 cur = conn.cursor()
 
 
@@ -64,7 +64,7 @@ for index, row in df.iterrows():
         row["GCV/PCV/Misc."],
         row["No.Passengers/GVW"],
         row["Vehicle_No."],
-        row["CC"],
+        float(str(row["CC"]).strip()) if pd.notna(row["CC"]) and str(row["CC"]).strip() != "" else None,
         row["Fuel"],
         row["RTOName"],
         row["REF NAME"],

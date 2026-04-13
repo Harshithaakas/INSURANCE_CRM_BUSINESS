@@ -273,6 +273,44 @@ def dashboard_data():
         "agents":          agents
     })
 
+@app.route("/agents_by_month")
+def agents_by_month():
+    month = request.args.get("month")
+    
+    conn = get_db_connection()
+    cur  = conn.cursor(dictionary=True)
+
+    if month and month != "all":
+        cur.execute("""
+            SELECT ref_name AS agent_name,
+                   COUNT(*) AS policies,
+                   SUM(gross_premium) AS revenue
+            FROM policies
+            WHERE MONTH(expire_date) = %s
+            AND YEAR(expire_date) = YEAR(CURDATE())
+            GROUP BY ref_name
+            ORDER BY revenue DESC
+            LIMIT 5
+        """, (month,))
+    else:
+        cur.execute("""
+            SELECT ref_name AS agent_name,
+                   COUNT(*) AS policies,
+                   SUM(gross_premium) AS revenue
+            FROM policies
+            GROUP BY ref_name
+            ORDER BY revenue DESC
+            LIMIT 5
+        """)
+
+    agents = cur.fetchall()
+    conn.close()
+
+    return jsonify([
+        {"name": a["agent_name"], "policies": a["policies"], "revenue": float(a["revenue"] or 0)}
+        for a in agents
+    ])
+
 # ---------------- CUSTOMERS ----------------
 
 @app.route("/customers")

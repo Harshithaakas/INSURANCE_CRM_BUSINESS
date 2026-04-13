@@ -531,7 +531,15 @@ function filterInsurance(type) {
 }
 
 
-
+function filterAgents(){
+    let month = document.getElementById("agentMonth").value;
+    
+    fetch("/agents_by_month?month=" + month)
+    .then(res => res.json())
+    .then(agents => {
+        loadAgents(agents);
+    });
+}
 
 // ------------------------- Auto-load Dashboard -------------------------
 window.onload = function(){
