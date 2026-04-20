@@ -367,9 +367,9 @@ def new_customer():
     filename = None
     if file and file.filename != "":
         upload_result = cloudinary.uploader.upload(
-        file,
-        resource_type="raw",
-        folder="nsure_policies"
+                file,
+                resource_type="raw",
+                folder="nsure_policies"
         )
         filename = upload_result["secure_url"]
 
@@ -634,12 +634,11 @@ def edit_customer(id):
 
         if file and file.filename != "":
             upload_result = cloudinary.uploader.upload(
-            file,
-            resource_type="raw",
-            folder="nsure_policies"
+                file,
+                resource_type="raw",
+                folder="nsure_policies"
             )
             filename = upload_result["secure_url"]
-
         expire_date = request.form.get("expire_date") or None
 
         cur.execute("""
