@@ -668,7 +668,7 @@ def edit_customer(id):
 
         conn.commit()
         conn.close()
-        return redirect(url_for("customers_search"))
+        return redirect(url_for("admin_dashboard"))
 
     cur.execute("SELECT * FROM policies WHERE id=%s", (id,))
     customer = cur.fetchone()
