@@ -12,6 +12,14 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import mysql.connector
 
 from models import db, Quote
+import cloudinary
+import cloudinary.uploader
+
+cloudinary.config(
+    cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key    = os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret = os.environ.get("CLOUDINARY_API_SECRET")
+)
 
 app = Flask(__name__)
 
@@ -354,11 +362,16 @@ def new_customer():
         expire_date = request.form.get("expire_date") or None
 
         # PDF Upload
-        file     = request.files.get("policy_pdf")
-        filename = None
-        if file and file.filename != "":
-            filename = str(uuid.uuid4()) + "_" + file.filename
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        # PDF Upload to Cloudinary
+    file     = request.files.get("policy_pdf")
+    filename = None
+    if file and file.filename != "":
+        upload_result = cloudinary.uploader.upload(
+        file,
+        resource_type="raw",
+        folder="nsure_policies"
+        )
+        filename = upload_result["secure_url"]
 
         conn          = get_db_connection()
         cur           = conn.cursor()
@@ -442,7 +455,7 @@ def delete_pdf(id):
     conn.commit()
     conn.close()
 
-    return redirect(url_for("admin_dashboard"))
+    return redirect("/customers_search")
 
 # ---------------- IMPORT EXCEL ----------------
 
@@ -620,8 +633,12 @@ def edit_customer(id):
         filename = old["policy_pdf"]
 
         if file and file.filename != "":
-            filename = str(uuid.uuid4()) + "_" + file.filename
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            upload_result = cloudinary.uploader.upload(
+            file,
+            resource_type="raw",
+            folder="nsure_policies"
+            )
+            filename = upload_result["secure_url"]
 
         expire_date = request.form.get("expire_date") or None
 

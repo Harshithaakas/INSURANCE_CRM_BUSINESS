@@ -6,3 +6,4 @@ werkzeug
 pandas
 openpyxl
 gunicorn
+cloudinary
