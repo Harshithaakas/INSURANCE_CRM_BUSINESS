@@ -328,7 +328,7 @@ def customers_search():
     cur  = conn.cursor(dictionary=True)
     cur.execute("""
         SELECT id,
-               sr_no, month, cust_name, insurer, policy_type,
+               sr_no, DATE_FORMAT(month, '%b %Y') AS month, cust_name, insurer, policy_type,
                department, source, expire_date,
                commissionable_premium, net_od_premium, tp_premium,
                pbst_np, gross_premium, ncb, policy_number,

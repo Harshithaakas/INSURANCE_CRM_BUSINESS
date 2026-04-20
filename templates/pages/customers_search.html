@@ -335,7 +335,7 @@ th{
 
 
 <td>{{ loop.index }}</td>
-<td>{{ c.month }}</td>
+<td>{{ c.month | string | truncate(7, False, '') if c.month else '' }}</td>
 <td>{{ c.cust_name }}</td>
 <td>{{ c.insurer }}</td>
 <td>{{ c.policy_type }}</td>
