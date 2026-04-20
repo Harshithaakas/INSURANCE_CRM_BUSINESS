@@ -455,7 +455,7 @@ def delete_pdf(id):
     conn.commit()
     conn.close()
 
-    return redirect("/customers_search")
+    return redirect(url_for("admin_dashboard"))
 
 # ---------------- IMPORT EXCEL ----------------
 
