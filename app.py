@@ -417,7 +417,7 @@ def new_customer():
         conn.commit()
         conn.close()
 
-        return redirect(url_for("customers_search"))
+        return redirect(url_for("admin_dashboard"))
 
     return render_template("pages/new_customer.html")
 
