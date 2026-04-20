@@ -398,7 +398,7 @@ def new_customer():
             clean_decimal(request.form.get("tp_premium")),
             clean_decimal(request.form.get("pbst_np")),
             clean_decimal(request.form.get("gross_premium")),
-            request.form["ncb"],
+            clean_decimal(request.form.get("ncb")),
             policy_number,
             request.form["make"],
             request.form["model_variant"],
@@ -649,7 +649,7 @@ def edit_customer(id):
             clean_decimal(request.form.get("tp_premium")),
             clean_decimal(request.form.get("pbst_np")),
             clean_decimal(request.form.get("gross_premium")),
-            request.form["ncb"],
+            clean_decimal(request.form.get("ncb")),
             request.form["policy_number"],
             request.form["make"],
             request.form["model_variant"],
@@ -707,7 +707,7 @@ def update_customer(id):
         clean_decimal(data.get("tp_premium")),
         clean_decimal(data.get("pbst_np")),
         clean_decimal(data.get("gross_premium")),
-        data["ncb"], data["policy_number"],
+        clean_decimal(data.get("ncb")), data["policy_number"],
         data["make"], data["model_variant"], data["vehicle_category"],
         data["passengers_gvw"], data["vehicle_no"],
         clean_decimal(data.get("cc")),
@@ -806,7 +806,6 @@ def get_renewals():
     elif policy_type:
         query += " AND policy_type = %s"
         params.append(policy_type)
-
     cur.execute(query, params)
     renewals = cur.fetchall()
     conn.close()
