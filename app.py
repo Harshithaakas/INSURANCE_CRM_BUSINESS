@@ -369,7 +369,10 @@ def new_customer():
             upload_result = cloudinary.uploader.upload(
                 file,
                 resource_type="raw",
-                folder="nsure_policies"
+                folder="nsure_policies",
+                format="pdf",
+                use_filename=True,
+                unique_filename=True
             )
             filename = upload_result["secure_url"]
 
@@ -636,7 +639,10 @@ def edit_customer(id):
             upload_result = cloudinary.uploader.upload(
                 file,
                 resource_type="raw",
-                folder="nsure_policies"
+                folder="nsure_policies",
+                format="pdf",
+                use_filename=True,
+                unique_filename=True
             )
             filename = upload_result["secure_url"]
         expire_date = request.form.get("expire_date") or None
