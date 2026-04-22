@@ -371,7 +371,8 @@ def new_customer():
                 resource_type="auto",
                 folder="nsure_policies",
                 use_filename=True,
-                unique_filename=True
+                unique_filename=True,
+                access_mode="public"
             )
             filename = upload_result["secure_url"].replace("/image/upload/", "/raw/upload/")
 
@@ -640,7 +641,8 @@ def edit_customer(id):
                 resource_type="auto",
                 folder="nsure_policies",
                 use_filename=True,
-                unique_filename=True
+                unique_filename=True,
+                access_mode="public"
             )
             filename = upload_result["secure_url"].replace("/image/upload/", "/raw/upload/")
         expire_date = request.form.get("expire_date") or None
