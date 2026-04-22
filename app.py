@@ -363,15 +363,15 @@ def new_customer():
 
         # PDF Upload
         # PDF Upload to Cloudinary
-    file     = request.files.get("policy_pdf")
-    filename = None
-    if file and file.filename != "":
-        upload_result = cloudinary.uploader.upload(
+        file     = request.files.get("policy_pdf")
+        filename = None
+        if file and file.filename != "":
+            upload_result = cloudinary.uploader.upload(
                 file,
                 resource_type="raw",
                 folder="nsure_policies"
-        )
-        filename = upload_result["secure_url"]
+            )
+            filename = upload_result["secure_url"]
 
         conn          = get_db_connection()
         cur           = conn.cursor()

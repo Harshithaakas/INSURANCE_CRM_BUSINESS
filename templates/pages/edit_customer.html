@@ -276,7 +276,7 @@ grid-column:1;
 <label>Current Policy PDF</label><br>
 
 {% if customer.policy_pdf %}
-<a href="/static/uploads/policies/{{customer.policy_pdf}}" target="_blank">
+<a href="{{customer.policy_pdf}}" target="_blank">
 View Current File
 </a>
 {% else %}
