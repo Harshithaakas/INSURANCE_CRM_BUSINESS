@@ -370,7 +370,6 @@ def new_customer():
                 file,
                 resource_type="auto",
                 folder="nsure_policies",
-                format="pdf",
                 use_filename=True,
                 unique_filename=True
             )
@@ -640,7 +639,6 @@ def edit_customer(id):
                 file,
                 resource_type="auto",
                 folder="nsure_policies",
-                format="pdf",
                 use_filename=True,
                 unique_filename=True
             )
