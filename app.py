@@ -374,7 +374,7 @@ def new_customer():
                 use_filename=True,
                 unique_filename=True
             )
-            filename = upload_result["secure_url"]
+            filename = upload_result["secure_url"].replace("/image/upload/", "/raw/upload/")
 
         conn          = get_db_connection()
         cur           = conn.cursor()
@@ -644,7 +644,7 @@ def edit_customer(id):
                 use_filename=True,
                 unique_filename=True
             )
-            filename = upload_result["secure_url"]
+            filename = upload_result["secure_url"].replace("/image/upload/", "/raw/upload/")
         expire_date = request.form.get("expire_date") or None
 
         cur.execute("""
