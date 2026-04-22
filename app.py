@@ -368,7 +368,7 @@ def new_customer():
         if file and file.filename != "":
             upload_result = cloudinary.uploader.upload(
                 file,
-                resource_type="raw",
+                resource_type="auto",
                 folder="nsure_policies",
                 format="pdf",
                 use_filename=True,
@@ -638,7 +638,7 @@ def edit_customer(id):
         if file and file.filename != "":
             upload_result = cloudinary.uploader.upload(
                 file,
-                resource_type="raw",
+                resource_type="auto",
                 folder="nsure_policies",
                 format="pdf",
                 use_filename=True,
